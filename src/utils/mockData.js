@@ -67,8 +67,8 @@ export const INITIAL_DAILY_CASH_CLOSINGS = [
   {
     date: '08/10/2026',
     dayLabel: 'Hôm nay (08/10)',
-    amount: 3600000,
-    bowlCountEstimate: 62,
+    amount: 0,
+    bowlCountEstimate: 0,
     status: 'unclosed', // 🟡 Chưa chốt cuối ngày
     statusLabel: 'Đang mở sổ hôm nay',
     note: 'Thu tiền mặt tại bàn ca sáng & ca trưa',
@@ -77,8 +77,8 @@ export const INITIAL_DAILY_CASH_CLOSINGS = [
   {
     date: '07/10/2026',
     dayLabel: 'Hôm qua (07/10)',
-    amount: 3950000,
-    bowlCountEstimate: 68,
+    amount: 0,
+    bowlCountEstimate: 0,
     status: 'forgotten', // 🔴 Quên chưa kê khai hôm qua -> Phải hoàn thiện trước
     statusLabel: 'Chưa chốt sổ hôm qua (Cần hoàn thiện)',
     note: 'Bác Ba quên chốt sổ tổng tiền mặt tối hôm qua',

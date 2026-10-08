@@ -34,7 +34,8 @@ export const ReconciliationScreen = () => {
     pendingCount,
     issueCount,
     matchedCount,
-    playSound 
+    playSound,
+    showToast
   } = useApp();
 
   const [searchKeyword, setSearchKeyword] = useState('');
@@ -114,35 +115,51 @@ export const ReconciliationScreen = () => {
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
-          {dailyCashClosings.map((d, idx) => (
-            <div
-              key={idx}
-              onClick={() => {
-                setCashModalOpen(true);
-                playSound('click');
-              }}
-              style={{
-                background: d.status === 'forgotten' ? '#FEF2F2' : (d.status === 'closed' ? '#ECFDF5' : '#FFFBEB'),
-                border: d.status === 'forgotten' ? '2px solid #FCA5A5' : (d.status === 'closed' ? '1.5px solid #A7F3D0' : '1.5px solid #FDE68A'),
-                borderRadius: '14px',
-                padding: '12px 14px',
-                cursor: 'pointer'
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                <span style={{ fontWeight: 800, fontSize: '0.88rem', color: '#0F172A' }}>{d.dayLabel}</span>
-                {d.status === 'closed' && <span style={{ fontSize: '0.74rem', color: '#065F46', fontWeight: 700 }}>🟢 Đã kê khai</span>}
-                {d.status === 'forgotten' && <span style={{ fontSize: '0.74rem', color: '#DC2626', fontWeight: 800 }}>🔴 Chưa kê khai</span>}
-                {d.status === 'unclosed' && <span style={{ fontSize: '0.74rem', color: '#D97706', fontWeight: 700 }}>🟡 Mở hôm nay</span>}
+          {dailyCashClosings.map((d, idx) => {
+            const isClosed = d.status === 'closed';
+
+            return (
+              <div
+                key={idx}
+                onClick={() => {
+                  if (isClosed) {
+                    playSound('click');
+                    showToast(`Sổ tiền mặt ngày ${d.dayLabel} đã chốt kê khai hoàn tất (Đã khóa số liệu). 🔒`, 'info');
+                  } else {
+                    const forgottenRecord = dailyCashClosings.find(item => item.status === 'forgotten');
+                    if (d.status === 'unclosed' && forgottenRecord) {
+                      playSound('click');
+                      showToast(`⛔ Vui lòng kê khai ngày ${forgottenRecord.dayLabel} trước!`, 'error');
+                    } else {
+                      playSound('click');
+                    }
+                    setCashModalOpen(true);
+                  }
+                }}
+                style={{
+                  background: d.status === 'forgotten' ? '#FEF2F2' : (isClosed ? '#F8FAFC' : '#FFFBEB'),
+                  border: d.status === 'forgotten' ? '2px solid #FCA5A5' : (isClosed ? '1.5px solid #CBD5E1' : '1.5px solid #FDE68A'),
+                  borderRadius: '14px',
+                  padding: '12px 14px',
+                  cursor: isClosed ? 'not-allowed' : 'pointer',
+                  opacity: isClosed ? 0.85 : 1
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                  <span style={{ fontWeight: 800, fontSize: '0.88rem', color: isClosed ? '#64748B' : '#0F172A' }}>{d.dayLabel}</span>
+                  {isClosed && <span style={{ fontSize: '0.74rem', color: '#64748B', fontWeight: 700 }}>🔒 Đã kê khai</span>}
+                  {d.status === 'forgotten' && <span style={{ fontSize: '0.74rem', color: '#DC2626', fontWeight: 800 }}>🔴 Chưa kê khai</span>}
+                  {d.status === 'unclosed' && <span style={{ fontSize: '0.74rem', color: '#D97706', fontWeight: 700 }}>🟡 Mở hôm nay</span>}
+                </div>
+                <div style={{ fontSize: '1.25rem', fontWeight: 800, color: d.status === 'forgotten' ? '#DC2626' : (isClosed ? '#475569' : '#064E3B'), fontVariantNumeric: 'tabular-nums' }}>
+                  {isClosed ? formatVND(d.amount) : 'Chưa kê khai'}
+                </div>
+                <div style={{ fontSize: '0.76rem', color: '#64748B', marginTop: '2px' }}>
+                  {d.note}
+                </div>
               </div>
-              <div style={{ fontSize: '1.25rem', fontWeight: 800, color: d.status === 'forgotten' ? '#DC2626' : '#064E3B', fontVariantNumeric: 'tabular-nums' }}>
-                {formatVND(d.amount)}
-              </div>
-              <div style={{ fontSize: '0.76rem', color: '#64748B', marginTop: '2px' }}>
-                {d.note}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

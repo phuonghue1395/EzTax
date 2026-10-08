@@ -7,6 +7,7 @@ import { ReconciliationScreen } from './screens/ReconciliationScreen';
 import { TaxScreen } from './screens/TaxScreen';
 import { VerificationScreen } from './screens/VerificationScreen';
 import { AdvisorScreen } from './screens/AdvisorScreen';
+import { AlertTriangle, CheckCircle2, Info } from 'lucide-react';
 
 // Modals
 import { CashEntryModal } from './components/CashEntryModal';
@@ -67,9 +68,12 @@ const AppContent = () => {
       <VoiceAssistantModal />
       <VerifyExternalModal />
 
-      {/* Toast Notification */}
+      {/* Toast Notification (Top Right) */}
       {toast && (
-        <div className="app-toast">
+        <div className={`app-toast toast-${toast.type || 'success'}`}>
+          {toast.type === 'error' && <AlertTriangle size={16} color="#FCA5A5" style={{ flexShrink: 0 }} />}
+          {toast.type === 'info' && <Info size={16} color="#38BDF8" style={{ flexShrink: 0 }} />}
+          {(toast.type === 'success' || !toast.type) && <CheckCircle2 size={16} color="#34D399" style={{ flexShrink: 0 }} />}
           <span>{toast.message}</span>
         </div>
       )}

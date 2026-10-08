@@ -87,15 +87,15 @@ export const DeviceFrame = ({ children }) => {
               <strong> "Không cần hỏi – Một chạm giải quyết – Số tiền là nhân vật chính"</strong>.
             </p>
 
-            {/* 3 Core Golden Questions */}
+            {/* 3 Core Golden Cards */}
             <div style={{ background: 'rgba(15, 23, 42, 0.6)', padding: '16px', borderRadius: '16px', marginBottom: '16px', border: '1px solid rgba(255,255,255,0.1)' }}>
               <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#34D399', marginBottom: '10px' }}>
-                🎯 3 Câu Hỏi Cốt Lõi Trên Màn Hình Chính:
+                🎯 3 Khối Thông Tin Cốt Lõi Trên Màn Hình Chính:
               </h3>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.9rem', color: '#E2E8F0' }}>
-                <li><strong>(1) Hôm nay thu bao nhiêu?</strong> Số tiền to 44px, phân bổ rõ 3 nguồn (VietQR, MoMo, Tiền mặt).</li>
-                <li><strong>(2) Có gì cần tôi làm không?</strong> Thẻ màu cảnh báo 3 cấp độ (🟢 Khớp, 🟡 Chờ xuất HĐ, 🔴 Tiền cá nhân).</li>
-                <li><strong>(3) Thuế tháng này bao nhiêu, đã ổn chưa?</strong> Tự động tính 4.5% / 1.5% / 7.0% theo Thông tư 40.</li>
+                <li><strong>• Doanh thu thực nhận hôm nay:</strong> Số tiền tổng hợp từ 3 nguồn (VietQR, MoMo, Tiền mặt).</li>
+                <li><strong>• Xử lý giao dịch & đối soát:</strong> Thẻ cảnh báo phân loại giao dịch & phát hành HĐĐT.</li>
+                <li><strong>• Nghĩa vụ thuế Quý tạm tính:</strong> Tự động tính thuế GTGT & TNCN theo NĐ 141/2026/NĐ-CP.</li>
               </ul>
             </div>
 

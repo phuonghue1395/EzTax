@@ -104,12 +104,12 @@ export const HomeScreen = () => {
       {/* 3 GOLDEN QUESTIONS GRID FOR PHO BAC BA                      */}
       {/* ========================================================== */}
       <div className="golden-questions-grid">
-        {/* CARD 1: (1) Hôm nay thu bao nhiêu? */}
+        {/* CARD 1: TỔNG DOANH THU HÔM NAY */}
         <div className="web-hero-card-primary">
           <div>
             <div className="web-card-label">
               <TrendingUp size={18} />
-              <span>(1) Hôm nay thu bao nhiêu?</span>
+              <span>TỔNG DOANH THU HÔM NAY</span>
             </div>
 
             <div className="web-hero-number">
@@ -117,7 +117,7 @@ export const HomeScreen = () => {
             </div>
 
             <div className="web-hero-subtext">
-              🍜 Ước tính <strong>~{Math.round(todayRevenue / 60000)} bát phở</strong> (giá 45k - 70k/bát).
+              Doanh thu tổng hợp từ VietQR, Ví điện tử & Tiền mặt
             </div>
           </div>
 
@@ -132,17 +132,17 @@ export const HomeScreen = () => {
               <div className="web-source-pill-val">{formatVND(walletAmount)}</div>
             </div>
             <div className="web-source-pill">
-              <div className="web-source-pill-title">💵 Tiền mặt (1 lần)</div>
+              <div className="web-source-pill-title">💵 Tiền mặt cuối ngày</div>
               <div className="web-source-pill-val">{formatVND(cashAmount)}</div>
             </div>
           </div>
         </div>
 
-        {/* CARD 2: (2) Có gì cần tôi làm không? */}
+        {/* CARD 2: GIAO DỊCH CẦN XỬ LÝ & ĐỐI SOÁT */}
         <div className="web-action-card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
             <div style={{ fontSize: '1rem', fontWeight: 800, color: '#0F172A', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span>(2) Có gì cần tôi làm không?</span>
+              <span>Xử Lý Giao Dịch & Đối Soát</span>
             </div>
           </div>
 
@@ -171,7 +171,7 @@ export const HomeScreen = () => {
                   onClick={() => setDiscrepancyTx(issueTx)}
                   style={{ width: '100%', minHeight: '40px', fontSize: '0.86rem' }}
                 >
-                  <span>Xác nhận: Tiền cá nhân (0% thuế)</span>
+                  <span>Xác nhận: Tiền cá nhân (Không tính thuế)</span>
                 </button>
               </div>
             ) : pendingTx ? (
@@ -197,7 +197,7 @@ export const HomeScreen = () => {
                   style={{ width: '100%', minHeight: '40px', fontSize: '0.86rem' }}
                 >
                   <Receipt size={16} />
-                  <span>Xuất Hóa Đơn (1 chạm)</span>
+                  <span>Phát hành Hóa Đơn Điện Tử</span>
                 </button>
               </div>
             ) : (
@@ -213,18 +213,18 @@ export const HomeScreen = () => {
                   🟢 MỌI THỨ ĐÃ KHỚP 100%!
                 </div>
                 <div style={{ fontSize: '0.84rem', color: '#047857', marginTop: '2px' }}>
-                  Toàn bộ giao dịch quét mã QR hôm nay đã đối soát xong với máy tính tiền.
+                  Toàn bộ giao dịch ngân hàng & ví điện tử đã đối soát xong với HĐĐT.
                 </div>
               </div>
             )}
           </div>
         </div>
 
-        {/* CARD 3: (3) Thuế Quý 4/2026 (Nghị định 141/2026/NĐ-CP) */}
+        {/* CARD 3: Thuế Quý 4/2026 Tạm Tính */}
         <div className="web-tax-card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
             <div style={{ fontSize: '1rem', fontWeight: 800, color: '#0F172A' }}>
-              (3) Thuế Quý 4/2026 Tạm Tính
+              Thuế Quý 4/2026 Tạm Tính
             </div>
             <span className="status-triple-badge badge-matched">
               <ShieldCheck size={14} />

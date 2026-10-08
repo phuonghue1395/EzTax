@@ -45,7 +45,7 @@ export const AppProvider = ({ children }) => {
 
   // Cash amount for today
   const todayCashRecord = dailyCashClosings.find(d => d.date === '08/10/2026');
-  const cashAmount = todayCashRecord ? todayCashRecord.amount : 3600000;
+  const cashAmount = todayCashRecord && todayCashRecord.status === 'closed' ? todayCashRecord.amount : 0;
 
   // Bank amount & Wallet amount from today's transactions
   const bankAmount = transactions

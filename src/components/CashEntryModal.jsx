@@ -16,18 +16,21 @@ export const CashEntryModal = () => {
   // Find if yesterday is forgotten/unclosed
   const yesterdayRecord = dailyCashClosings.find(d => d.date === '07/10/2026' && d.status === 'forgotten');
   const [selectedDayDate, setSelectedDayDate] = useState(yesterdayRecord ? '07/10/2026' : '08/10/2026');
-  const [amountStr, setAmountStr] = useState(yesterdayRecord ? '3950000' : '3600000');
+  const [amountStr, setAmountStr] = useState('0');
 
   const inputRef = useRef(null);
 
   useEffect(() => {
     if (cashModalOpen) {
+      setAmountStr('0');
+      const targetDate = yesterdayRecord ? '07/10/2026' : '08/10/2026';
+      setSelectedDayDate(targetDate);
       setTimeout(() => {
         inputRef.current?.focus();
         inputRef.current?.select();
       }, 100);
     }
-  }, [cashModalOpen, selectedDayDate]);
+  }, [cashModalOpen]);
 
   if (!cashModalOpen) return null;
 
@@ -55,12 +58,24 @@ export const CashEntryModal = () => {
   };
 
   const handleSave = () => {
+    const targetRecord = dailyCashClosings.find(d => d.date === selectedDayDate);
+    if (targetRecord && targetRecord.status === 'closed') {
+      playSound('click');
+      showToast(`Ngày ${targetRecord.dayLabel} đã kê khai hoàn tất, không thể sửa đổi! 🔒`, 'info');
+      return;
+    }
+    if (targetRecord && targetRecord.status === 'unclosed' && yesterdayRecord) {
+      playSound('click');
+      showToast(`⛔ Vui lòng kê khai ngày ${yesterdayRecord.dayLabel} trước!`, 'error');
+      return;
+    }
+
     const num = Number(amountStr);
     if (num > 0) {
       closeDailyCash(selectedDayDate, num);
       playSound('success');
       showToast(
-        isYesterday 
+        selectedDayDate === '07/10/2026' 
           ? `Đã hoàn thiện chốt sổ tiền mặt ngày hôm qua (${formatVND(num)})! 🟢` 
           : `Đã chốt tổng doanh thu tiền mặt ngày hôm nay (${formatVND(num)})! 🟢`,
         'success'
@@ -168,18 +183,15 @@ export const CashEntryModal = () => {
               let borderColor = '#E2E8F0';
               let bgColor = '#FFFFFF';
               let textColor = '#0F172A';
-              let badgeBg = '#ECFDF5';
-              let badgeColor = '#065F46';
-              let badgeText = '🟢 Đã kê khai';
+              let badgeBg = '#F1F5F9';
+              let badgeColor = '#64748B';
+              let badgeText = '🔒 Đã kê khai';
 
               if (isClosed) {
-                badgeText = '🟢 Đã kê khai';
-                badgeBg = '#ECFDF5';
-                badgeColor = '#059669';
-                if (isSelected) {
-                  borderColor = '#059669';
-                  bgColor = '#ECFDF5';
-                }
+                badgeText = '🔒 Đã kê khai';
+                badgeBg = '#F1F5F9';
+                badgeColor = '#64748B';
+                textColor = '#64748B';
               } else if (isForgotten) {
                 badgeText = '🔴 Chưa kê khai';
                 badgeBg = '#FEF2F2';
@@ -204,18 +216,27 @@ export const CashEntryModal = () => {
                 <button
                   key={item.date}
                   onClick={() => {
-                    setSelectedDayDate(item.date);
-                    setAmountStr(String(item.amount || 0));
-                    playSound('click');
+                    if (isClosed) {
+                      playSound('click');
+                      showToast(`Sổ tiền mặt ngày ${item.dayLabel} đã kê khai hoàn tất, không thể sửa đổi! 🔒`, 'info');
+                    } else if (isUnclosed && yesterdayRecord) {
+                      playSound('click');
+                      showToast(`⛔ Vui lòng kê khai ngày ${yesterdayRecord.dayLabel} trước!`, 'error');
+                    } else {
+                      setSelectedDayDate(item.date);
+                      setAmountStr(item.status === 'closed' ? String(item.amount) : '0');
+                      playSound('click');
+                    }
                   }}
                   style={{
                     padding: '10px 8px',
                     borderRadius: '12px',
                     border: isSelected ? `2px solid ${borderColor}` : '1.5px solid #E2E8F0',
-                    background: isSelected ? bgColor : '#FFFFFF',
+                    background: isClosed ? '#F8FAFC' : (isSelected ? bgColor : '#FFFFFF'),
                     color: textColor,
                     fontWeight: 700,
-                    cursor: 'pointer',
+                    cursor: isClosed ? 'not-allowed' : 'pointer',
+                    opacity: isClosed ? 0.65 : 1,
                     textAlign: 'left',
                     transition: 'all 0.15s ease',
                     boxShadow: isSelected ? '0 4px 12px rgba(0,0,0,0.06)' : 'none'
@@ -236,8 +257,8 @@ export const CashEntryModal = () => {
                   <div style={{ fontSize: '0.86rem', fontWeight: 800, lineHeight: '1.2' }}>
                     {item.dayLabel}
                   </div>
-                  <div style={{ fontSize: '0.78rem', color: '#64748B', marginTop: '2px', fontVariantNumeric: 'tabular-nums' }}>
-                    {formatVND(item.amount)}
+                  <div style={{ fontSize: '0.78rem', color: isClosed ? '#94A3B8' : '#64748B', marginTop: '2px', fontVariantNumeric: 'tabular-nums' }}>
+                    {isClosed ? formatVND(item.amount) : 'Chưa kê khai'}
                   </div>
                 </button>
               );
@@ -256,7 +277,7 @@ export const CashEntryModal = () => {
         }}>
           <div style={{ fontSize: '0.84rem', fontWeight: 700, color: '#065F46', textTransform: 'uppercase', marginBottom: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
             <Keyboard size={16} />
-            <span>Nhập trực tiếp bằng bàn phím ({isYesterday ? 'Hôm qua 07/10' : 'Hôm nay 08/10'}):</span>
+            <span>Nhập trực tiếp bằng bàn phím:</span>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
@@ -279,15 +300,9 @@ export const CashEntryModal = () => {
                 padding: '8px 16px',
                 width: '100%',
                 maxWidth: '400px',
-                outline: 'none',
-                boxShadow: '0 4px 12px rgba(5, 150, 105, 0.15)'
               }}
             />
             <span style={{ fontSize: '2rem', fontWeight: 800, color: '#064E3B' }}>đ</span>
-          </div>
-
-          <div style={{ fontSize: '0.84rem', color: '#047857', marginTop: '10px' }}>
-            Ước tính khoảng <strong>{Math.round(numericValue / 55000)} bát phở</strong> • Thuế 4.5%: <strong>{formatVND(Math.round(numericValue * 0.045))}</strong>
           </div>
         </div>
 

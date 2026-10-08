@@ -264,7 +264,7 @@ export const TaxScreen = () => {
           }}
         >
           <Receipt size={20} color={activeTabMode === 'quarter' ? '#059669' : '#64748B'} />
-          <span>(1) TỜ KHAI THUẾ QUÝ 4/2026 (QUÁN BÁC BA)</span>
+          <span>TỜ KHAI THUẾ QUÝ 4/2026 (MẪU 01/CNKD)</span>
         </button>
 
         <button
@@ -290,7 +290,7 @@ export const TaxScreen = () => {
           }}
         >
           <Sparkles size={20} color={activeTabMode === 'simulator' ? '#2563EB' : '#64748B'} />
-          <span>(2) CÔNG CỤ TÍNH THỬ & SO SÁNH 2 PHƯƠNG PHÁP NĐ 141/2026</span>
+          <span>MÔ PHỎNG NGHĨA VỤ THUẾ & SO SÁNH 2 PHƯƠNG PHÁP NĐ 141/2026</span>
         </button>
       </div>
 

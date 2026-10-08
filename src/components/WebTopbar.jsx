@@ -33,9 +33,9 @@ export const WebTopbar = () => {
     <header className="web-topbar">
       {/* Left: Store Location & Tax Scale Context */}
       <div className="topbar-left">
-        <div className="store-context-pill" style={{ maxWidth: '320px', overflow: 'hidden' }}>
+        <div className="store-context-pill">
           <MapPin size={16} color="#059669" style={{ flexShrink: 0 }} />
-          <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{merchant.address}</span>
+          <span>{merchant.address}</span>
           <span style={{ color: '#94A3B8', flexShrink: 0 }}>•</span>
           <span style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>MST: <strong>{merchant.taxCode}</strong></span>
         </div>
