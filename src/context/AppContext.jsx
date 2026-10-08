@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { MERCHANT_PHO_BAC_BA, INITIAL_TRANSACTIONS, INITIAL_DAILY_CASH_CLOSINGS, GLOSSARY_ITEMS } from '../utils/mockData';
+import { MERCHANT_PHO_BAC_BA, INITIAL_TRANSACTIONS, INITIAL_DAILY_CASH_CLOSINGS } from '../utils/mockData';
 import { calculateTax, TAX_MANDATORY_SCALE, TAX_LEGAL_FRAMEWORK, BUSINESS_SECTORS } from '../utils/taxRules';
 import { playSound } from '../utils/sound';
 import confetti from 'canvas-confetti';
@@ -26,8 +26,6 @@ export const AppProvider = ({ children }) => {
   // Modals & Sheets
   const [cashModalOpen, setCashModalOpen] = useState(false);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
-  const [glossaryModalOpen, setGlossaryModalOpen] = useState(false);
-  const [glossaryInitialTerm, setGlossaryInitialTerm] = useState(null);
   const [selectedTx, setSelectedTx] = useState(null);
   const [discrepancyTx, setDiscrepancyTx] = useState(null);
   const [taxReportModalOpen, setTaxReportModalOpen] = useState(false);
@@ -187,12 +185,6 @@ export const AppProvider = ({ children }) => {
     }, 400);
   };
 
-  const openGlossary = (termName = null) => {
-    setGlossaryInitialTerm(termName);
-    setGlossaryModalOpen(true);
-    playSound('click', soundEnabled);
-  };
-
   const value = {
     merchant,
     isSeniorMode,
@@ -240,7 +232,6 @@ export const AppProvider = ({ children }) => {
     // Actions
     resolveTransaction,
     autoReconcileAll,
-    openGlossary,
     showToast,
     toast,
 
@@ -249,9 +240,6 @@ export const AppProvider = ({ children }) => {
     setCashModalOpen,
     uploadModalOpen,
     setUploadModalOpen,
-    glossaryModalOpen,
-    setGlossaryModalOpen,
-    glossaryInitialTerm,
     selectedTx,
     setSelectedTx,
     discrepancyTx,

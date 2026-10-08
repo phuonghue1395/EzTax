@@ -11,7 +11,6 @@ import { AdvisorScreen } from './screens/AdvisorScreen';
 // Modals
 import { CashEntryModal } from './components/CashEntryModal';
 import { UploadStatementModal } from './components/UploadStatementModal';
-import { GlossaryModal } from './components/GlossaryModal';
 import { TransactionDetailModal } from './components/TransactionDetailModal';
 import { DiscrepancyWizardModal } from './components/DiscrepancyWizardModal';
 import { TaxReportModal } from './components/TaxReportModal';
@@ -61,7 +60,6 @@ const AppContent = () => {
       {/* Global Dialogs & Modals */}
       <CashEntryModal />
       <UploadStatementModal />
-      <GlossaryModal />
       <TransactionDetailModal />
       <DiscrepancyWizardModal />
       <TaxReportModal />

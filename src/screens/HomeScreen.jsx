@@ -5,7 +5,6 @@ import {
   CheckCircle2, 
   AlertTriangle, 
   XCircle, 
-  HelpCircle, 
   ArrowRight, 
   ShieldCheck, 
   CreditCard, 
@@ -39,7 +38,6 @@ export const HomeScreen = () => {
     setCashModalOpen,
     setSelectedTx,
     setDiscrepancyTx,
-    openGlossary,
     setActiveTab,
     setUploadModalOpen,
     isYesterdayCashForgotten,
@@ -64,21 +62,21 @@ export const HomeScreen = () => {
       {isYesterdayCashForgotten && (
         <div style={{
           background: '#FEF2F2',
-          border: '2px solid #FCA5A5',
-          borderRadius: '20px',
-          padding: '18px 24px',
+          border: '1.5px solid #FCA5A5',
+          borderRadius: '16px',
+          padding: '16px 20px',
           marginBottom: '24px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          boxShadow: '0 4px 14px rgba(220, 38, 38, 0.12)'
+          boxShadow: '0 4px 14px rgba(220, 38, 38, 0.08)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            <div style={{ background: '#DC2626', color: '#FFFFFF', padding: '10px', borderRadius: '12px' }}>
-              <AlertTriangle size={24} />
+            <div style={{ background: '#DC2626', color: '#FFFFFF', padding: '10px', borderRadius: '12px', flexShrink: 0, display: 'flex' }}>
+              <AlertTriangle size={22} />
             </div>
             <div>
-              <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#991B1B' }}>
+              <div style={{ fontSize: '1rem', fontWeight: 800, color: '#991B1B' }}>
                 Hôm qua (07/10) bác chưa chốt sổ tổng tiền mặt cuối ngày!
               </div>
               <div style={{ fontSize: '0.86rem', color: '#7F1D1D', marginTop: '2px' }}>
@@ -146,13 +144,6 @@ export const HomeScreen = () => {
             <div style={{ fontSize: '1rem', fontWeight: 800, color: '#0F172A', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span>(2) Có gì cần tôi làm không?</span>
             </div>
-            <button 
-              className="btn-subtle-link"
-              onClick={() => openGlossary('Unresolved / Discrepancy')}
-            >
-              <HelpCircle size={15} />
-              <span>Giải thích</span>
-            </button>
           </div>
 
           {/* Alert items */}
@@ -162,8 +153,7 @@ export const HomeScreen = () => {
                 background: '#FEF2F2',
                 border: '1.5px solid #FECACA',
                 borderRadius: '16px',
-                padding: '14px',
-                marginBottom: '10px'
+                padding: '14px'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                   <span className="status-triple-badge badge-issue">
@@ -189,8 +179,7 @@ export const HomeScreen = () => {
                 background: '#FFFBEB',
                 border: '1.5px solid #FDE68A',
                 borderRadius: '16px',
-                padding: '14px',
-                marginBottom: '10px'
+                padding: '14px'
               }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
                   <span className="status-triple-badge badge-pending">
@@ -228,17 +217,6 @@ export const HomeScreen = () => {
                 </div>
               </div>
             )}
-          </div>
-
-          <div style={{ marginTop: '10px' }}>
-            <button
-              className="btn-secondary-outline"
-              onClick={() => setActiveTab('reconcile')}
-              style={{ width: '100%', minHeight: '40px', fontSize: '0.88rem' }}
-            >
-              <span>Xem sổ đối soát & sao kê</span>
-              <ArrowRight size={16} />
-            </button>
           </div>
         </div>
 

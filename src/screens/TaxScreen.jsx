@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { 
   Calculator, 
-  HelpCircle, 
   FileText, 
   CheckCircle2, 
   ArrowRight, 
@@ -36,7 +35,6 @@ export const TaxScreen = () => {
   const { 
     merchant, 
     setTaxReportModalOpen, 
-    openGlossary, 
     quarterTaxInfo, 
     selectedSectorId,
     setSelectedSectorId,
@@ -102,17 +100,6 @@ export const TaxScreen = () => {
           <p style={{ fontSize: '0.92rem', color: '#64748B', marginTop: '2px' }}>
             Ngưỡng doanh thu miễn thuế nâng lên <strong>1 tỷ đồng/năm</strong>. Hỗ trợ kê khai Quý và 2 phương pháp tính TNCN.
           </p>
-        </div>
-
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button 
-            className="btn-subtle-link" 
-            onClick={() => openGlossary('Nghị định 141/2026/NĐ-CP (Ngưỡng 1 Tỷ)')}
-            style={{ fontSize: '0.92rem' }}
-          >
-            <HelpCircle size={18} />
-            <span>Cẩm nang quy định NĐ 141/2026</span>
-          </button>
         </div>
       </div>
 
@@ -398,13 +385,6 @@ export const TaxScreen = () => {
                   <Scale size={18} color="#059669" />
                   <span>Chọn Phương Pháp Tính Thuế TNCN:</span>
                 </div>
-                <button 
-                  className="btn-subtle-link" 
-                  onClick={() => openGlossary('2 Phương pháp tính TNCN (1 - 3 Tỷ)')}
-                >
-                  <HelpCircle size={15} />
-                  <span>So sánh 2 phương pháp</span>
-                </button>
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '14px' }}>

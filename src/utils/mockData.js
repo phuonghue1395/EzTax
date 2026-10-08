@@ -234,65 +234,6 @@ export const INITIAL_TRANSACTIONS = [
   }
 ];
 
-export const GLOSSARY_ITEMS = [
-  {
-    techTerm: 'Nghị định 141/2026/NĐ-CP (Ngưỡng 1 Tỷ)',
-    plainTerm: 'Miễn thuế doanh thu dưới 1 tỷ/năm',
-    badge: '📜 Áp dụng từ 01/01/2026',
-    explanation: 'Theo Nghị định 141/2026/NĐ-CP, ngưỡng không phải chịu thuế GTGT và TNCN được nâng từ 500 triệu lên 1 tỷ đồng/năm. Hộ kinh doanh có tổng doanh thu trong năm từ 1 tỷ trở xuống được miễn 100% thuế GTGT và TNCN.',
-    example: 'Ví dụ: Quán nhỏ bán được 800 triệu/năm -> Thuế GTGT = 0 ₫, Thuế TNCN = 0 ₫.'
-  },
-  {
-    techTerm: 'Thuế GTGT tính trên Doanh thu',
-    plainTerm: 'GTGT không trừ chi phí / không tính trên lãi',
-    badge: '💡 Lưu ý quan trọng',
-    explanation: 'Với hộ có doanh thu trên 1 tỷ/năm, thuế GTGT = Doanh thu × Tỷ lệ % GTGT ngành nghề. Thuế GTGT tính trên toàn bộ tiền thu bán hàng, không được trừ chi phí hay tính trên lợi nhuận.',
-    example: 'Ví dụ: Quán phở bán 5 triệu/ngày, chi phí 3 triệu (lãi 2 triệu). Thuế GTGT = 5 triệu × 3% = 150.000 ₫ (Không phải tính trên 2 triệu).'
-  },
-  {
-    techTerm: '2 Phương pháp tính TNCN (1 - 3 Tỷ)',
-    plainTerm: 'Chọn cách tính thuế TNCN có lợi nhất',
-    badge: '⚖️ Quyền lựa chọn của hộ KD',
-    explanation: 'Hộ doanh thu trên 1 tỷ đến 3 tỷ/năm được chọn: PP1 (Doanh thu − 1 tỷ) × thuế suất ngành (ví dụ 1.5%), HOẶC PP2 (Doanh thu − Chi phí hợp lệ) × 15%. Bác có thể chọn cách nào nộp ít tiền thuế hơn.',
-    example: 'Ví dụ: Doanh thu 2 tỷ, chi phí 1.2 tỷ -> PP1 nộp 1 tỷ × 1.5% = 15 triệu; PP2 nộp 800 triệu × 15% = 120 triệu -> Nên chọn PP1.'
-  },
-  {
-    techTerm: 'Thuế TNCN hộ doanh thu > 3 tỷ',
-    plainTerm: 'Tính TNCN bắt buộc theo Thu nhập (Lãi)',
-    badge: '📊 Thuế suất 17% & 20%',
-    explanation: 'Hộ có doanh thu trên 3 tỷ/năm bắt buộc tính TNCN theo Thu nhập: (Doanh thu − Chi phí hợp lý, hợp lệ) × Thuế suất. Mức trên 3 tỷ đến 50 tỷ thuế suất là 17%, trên 50 tỷ thuế suất là 20%.',
-    example: 'Ví dụ: Quán phở doanh thu 4.65 tỷ, chi phí hợp lệ 2.75 tỷ -> Thu nhập tính thuế = 1.9 tỷ × 17% = 323 triệu tiền thuế TNCN.'
-  },
-  {
-    techTerm: 'Reconcile / Đối soát',
-    plainTerm: 'Kiểm tra số liệu khớp chưa',
-    badge: '🟢 Đã khớp / 🟡 Chờ xác nhận',
-    explanation: 'Giống như việc cuối ngày bác cầm sao kê ngân hàng Vietcombank, MoMo so với hóa đơn máy tính tiền xem có bị sót đơn nào chưa xuất hóa đơn không.',
-    example: 'Ví dụ: Khách quét QR 55.000 ₫ ăn bát phở tái, ứng dụng đối chiếu thấy máy tính tiền đã xuất HĐ #HD00342 -> Báo màu xanh 🟢 Đã khớp.'
-  },
-  {
-    techTerm: 'Kê khai tiền mặt cuối ngày',
-    plainTerm: 'Chốt tổng tiền mặt 1 lần cuối ngày',
-    badge: '💵 Bảng kê cuối ngày',
-    explanation: 'Tiền mặt không cần gõ từng bát phở lẻ tẻ. Cuối mỗi ngày bác chỉ cần chốt 1 lần tổng số tiền mặt thu được trong két. Nếu hôm trước quên thì hôm sau phải hoàn thiện của ngày hôm trước riêng biệt, tuyệt đối không gộp chung.',
-    example: 'Ví dụ: Tối 07/10 quên chốt 3.950.000 ₫ -> Sáng 08/10 hệ thống nhắc bác chốt riêng sổ 07/10 trước khi mở sổ ngày 08/10.'
-  },
-  {
-    techTerm: 'Tiền cá nhân',
-    plainTerm: 'Tiền cá nhân (Không tính thuế)',
-    badge: '🛡️ Miễn thuế 100% (0 ₫)',
-    explanation: 'Khoản tiền người thân, bạn bè chuyển khoản vào tài khoản ngân hàng không phải là tiền bán phở. Khi bác chọn "Tiền cá nhân", hệ thống sẽ tách riêng và KHÔNG tính vào doanh thu chịu thuế.',
-    example: 'Ví dụ: Chị Ba chuyển 500.000 ₫ trả nợ tiền rau củ -> Bác chạm "Tiền cá nhân", số tiền này được miễn thuế 100%.'
-  },
-  {
-    techTerm: 'Blockchain / Hash',
-    plainTerm: 'Dấu xác thực chống chỉnh sửa',
-    badge: '🛡️ Niêm phong điện tử',
-    explanation: 'Như một con dấu mộc đỏ niêm phong điện tử lên toàn bộ số liệu doanh thu của quán. Cơ quan thuế và Ngân hàng quét mã là tin tưởng 100%, duyệt hồ sơ vay tín chấp nhanh chóng.',
-    example: 'Ví dụ: Bác gửi báo cáo vay Vietcombank mở rộng quán phở, ngân hàng duyệt giải ngân ngay trong ngày nhờ dấu xác thực.'
-  }
-];
-
 export const AI_FAQ_SAMPLES = [
   {
     q: 'Nghị định 141/2026/NĐ-CP quy định ngưỡng thuế 1 tỷ/năm thế nào?',

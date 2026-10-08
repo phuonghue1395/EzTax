@@ -3,9 +3,6 @@ import { useApp } from '../context/AppContext';
 import { 
   Smartphone, 
   Monitor, 
-  Volume2, 
-  VolumeX, 
-  Glasses, 
   Sparkles, 
   HelpCircle, 
   CheckCircle2, 
@@ -22,7 +19,6 @@ export const DeviceFrame = ({ children }) => {
     setIsSeniorMode, 
     soundEnabled, 
     setSoundEnabled,
-    openGlossary,
     merchant,
     playSound 
   } = useApp();
@@ -39,18 +35,7 @@ export const DeviceFrame = ({ children }) => {
         </div>
 
         <div className="toolbar-group">
-          {/* Audio toggle */}
-          <button
-            className={`toolbar-toggle-btn ${soundEnabled ? 'active' : ''}`}
-            onClick={() => {
-              setSoundEnabled(!soundEnabled);
-              playSound('click');
-            }}
-            title="Bật/Tắt âm thanh Ting-Ting khi nhận tiền"
-          >
-            {soundEnabled ? <Volume2 size={14} /> : <VolumeX size={14} />}
-            <span>{soundEnabled ? 'Âm thanh: BẬT' : 'Tắt'}</span>
-          </button>
+
 
           {/* View mode toggle */}
           <button

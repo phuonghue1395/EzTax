@@ -6,10 +6,6 @@ import {
   Calculator, 
   ShieldCheck, 
   Bot, 
-  BookOpen, 
-  Glasses, 
-  Volume2, 
-  VolumeX, 
   Receipt,
   Upload,
   UserCheck,
@@ -21,11 +17,6 @@ export const WebSidebar = () => {
     activeTab, 
     setActiveTab, 
     merchant, 
-    isSeniorMode, 
-    setIsSeniorMode, 
-    soundEnabled, 
-    setSoundEnabled,
-    openGlossary,
     pendingCount,
     issueCount,
     setUploadModalOpen,
@@ -36,11 +27,11 @@ export const WebSidebar = () => {
   const totalNeedsAction = pendingCount + issueCount + (isYesterdayCashForgotten ? 1 : 0);
 
   const navLinks = [
-    { id: 'home', label: 'Trang Chủ', icon: Home, badge: null, sublabel: '3 câu hỏi cốt lõi' },
-    { id: 'reconcile', label: 'Đối Soát & Thu Chi', icon: CheckCheck, badge: totalNeedsAction > 0 ? totalNeedsAction : null, sublabel: 'Kiểm tra khớp số liệu' },
-    { id: 'tax', label: 'Kê Khai Thuế Quý', icon: Calculator, badge: null, sublabel: 'Mẫu 01/CNKD (Doanh thu > 1 tỷ)' },
-    { id: 'verify', label: 'Dấu Xác Thực & Vay Vốn', icon: ShieldCheck, badge: null, sublabel: 'Chứng nhận chống sửa' },
-    { id: 'advisor', label: 'Trợ Lý Thuế Bác Ba', icon: Bot, badge: null, sublabel: 'AI tư vấn 24/7' }
+    { id: 'home', label: 'Trang Chủ', icon: Home, badge: null },
+    { id: 'reconcile', label: 'Đối Soát & Thu Chi', icon: CheckCheck, badge: totalNeedsAction > 0 ? totalNeedsAction : null },
+    { id: 'tax', label: 'Kê Khai Thuế Quý', icon: Calculator, badge: null },
+    { id: 'verify', label: 'Dấu Xác Thực & Vay Vốn', icon: ShieldCheck, badge: null },
+    { id: 'advisor', label: 'Trợ Lý Thuế Bác Ba', icon: Bot, badge: null }
   ];
 
   return (
@@ -122,7 +113,6 @@ export const WebSidebar = () => {
                 <IconComp size={20} strokeWidth={isActive ? 2.5 : 2} />
                 <div>
                   <div>{item.label}</div>
-                  <div style={{ fontSize: '0.72rem', opacity: isActive ? 0.9 : 0.6 }}>{item.sublabel}</div>
                 </div>
               </div>
 
@@ -132,79 +122,7 @@ export const WebSidebar = () => {
             </button>
           );
         })}
-
-        {/* Dictionary button in sidebar */}
-        <button
-          className="sidebar-nav-item"
-          onClick={() => openGlossary()}
-          style={{ marginTop: '8px', background: 'rgba(16, 185, 129, 0.08)', color: '#34D399', border: '1px dashed #059669' }}
-        >
-          <div className="nav-item-left">
-            <BookOpen size={20} />
-            <div>
-              <div>Cẩm Nang Thuật Ngữ</div>
-              <div style={{ fontSize: '0.72rem', opacity: 0.8 }}>Tiếng Việt dễ hiểu</div>
-            </div>
-          </div>
-        </button>
       </nav>
-
-      {/* Footer Accessibility Controls */}
-      <div className="sidebar-footer">
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <button
-            onClick={() => {
-              setIsSeniorMode(!isSeniorMode);
-              playSound('click');
-            }}
-            style={{
-              flex: 1,
-              padding: '8px 10px',
-              borderRadius: '10px',
-              border: isSeniorMode ? '1.5px solid #10B981' : '1px solid #334155',
-              background: isSeniorMode ? 'rgba(16, 185, 129, 0.2)' : '#1E293B',
-              color: isSeniorMode ? '#34D399' : '#CBD5E1',
-              fontSize: '0.8rem',
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '6px',
-              cursor: 'pointer'
-            }}
-          >
-            <Glasses size={16} />
-            <span>{isSeniorMode ? 'Chữ to: BẬT' : 'Chữ to'}</span>
-          </button>
-
-          <button
-            onClick={() => {
-              setSoundEnabled(!soundEnabled);
-              playSound('click');
-            }}
-            style={{
-              padding: '8px 12px',
-              borderRadius: '10px',
-              border: '1px solid #334155',
-              background: '#1E293B',
-              color: soundEnabled ? '#34D399' : '#94A3B8',
-              fontSize: '0.8rem',
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '4px',
-              cursor: 'pointer'
-            }}
-          >
-            {soundEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
-          </button>
-        </div>
-
-        <div style={{ fontSize: '0.72rem', color: '#64748B', textAlign: 'center' }}>
-          Doanh thu &gt; 1 tỷ/năm • Kê khai theo Quý
-        </div>
-      </div>
     </aside>
   );
 };

@@ -23,7 +23,6 @@ export const BottomNav = () => {
     {
       id: 'reconcile',
       label: 'Kiểm tra',
-      sublabel: 'Đối soát',
       icon: CheckCheck,
       badge: totalNeedsAction > 0 ? totalNeedsAction : null
     },
