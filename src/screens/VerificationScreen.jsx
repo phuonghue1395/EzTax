@@ -2,7 +2,6 @@ import React from 'react';
 import { useApp } from '../context/AppContext';
 import { 
   ShieldCheck, 
-  HelpCircle, 
   QrCode, 
   Building2, 
   ExternalLink, 
@@ -19,7 +18,6 @@ import { formatVND } from '../utils/taxRules';
 export const VerificationScreen = () => {
   const { 
     merchant, 
-    openGlossary, 
     setBankShareModalOpen, 
     setExternalVerifyModalOpen,
     playSound 
@@ -40,15 +38,6 @@ export const VerificationScreen = () => {
             "Con dấu mộc đỏ điện tử" niêm phong báo cáo doanh thu, ngân hàng và cơ quan thuế đối chiếu là tin ngay 100%.
           </p>
         </div>
-
-        <button 
-          className="btn-subtle-link" 
-          onClick={() => openGlossary('Blockchain / Anchoring / Hash')}
-          style={{ fontSize: '0.92rem' }}
-        >
-          <HelpCircle size={18} />
-          <span>Dấu xác thực là gì?</span>
-        </button>
       </div>
 
       {/* Horizontal Cryptographic Certificate Card */}

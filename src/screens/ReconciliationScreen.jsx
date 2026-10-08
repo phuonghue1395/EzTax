@@ -7,7 +7,6 @@ import {
   CreditCard, 
   Wallet, 
   Banknote, 
-  HelpCircle, 
   Sparkles, 
   Filter, 
   CheckCheck,
@@ -30,7 +29,6 @@ export const ReconciliationScreen = () => {
     setSelectedTx, 
     setDiscrepancyTx, 
     autoReconcileAll, 
-    openGlossary, 
     setCashModalOpen,
     setUploadModalOpen,
     pendingCount,
@@ -91,15 +89,6 @@ export const ReconciliationScreen = () => {
           >
             <Upload size={18} />
             <span>Tải lên sao kê</span>
-          </button>
-
-          <button 
-            className="btn-subtle-link" 
-            onClick={() => openGlossary('Reconcile / Đối soát')}
-            style={{ fontSize: '0.92rem' }}
-          >
-            <HelpCircle size={18} />
-            <span>Đối soát là gì?</span>
           </button>
         </div>
       </div>

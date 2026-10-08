@@ -4,7 +4,7 @@ import { AlertCircle, ShieldAlert, CheckCircle2, UserCheck, Receipt, RotateCcw, 
 import { formatVND } from '../utils/taxRules';
 
 export const DiscrepancyWizardModal = () => {
-  const { discrepancyTx, setDiscrepancyTx, resolveTransaction, playSound, openGlossary } = useApp();
+  const { discrepancyTx, setDiscrepancyTx, resolveTransaction, playSound } = useApp();
   const [selectedOption, setSelectedOption] = useState('non_taxable');
 
   if (!discrepancyTx) return null;

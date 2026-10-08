@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { 
   Building2, 
   ChevronDown, 
-  Volume2, 
-  VolumeX, 
-  HelpCircle, 
-  Glasses, 
   Wifi, 
   CheckCircle2, 
   Store,
-  Sparkles
+  Sparkles,
+  Clock
 } from 'lucide-react';
 
 export const Header = () => {
@@ -18,19 +15,38 @@ export const Header = () => {
     merchant, 
     merchants, 
     handleSelectMerchant, 
-    isSeniorMode, 
-    setIsSeniorMode, 
-    soundEnabled, 
-    setSoundEnabled,
-    openGlossary,
     playSound
   } = useApp();
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (d) => {
+    const hours = String(d.getHours()).padStart(2, '0');
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+    const seconds = String(d.getSeconds()).padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+  };
+
+  const formatDate = (d) => {
+    const days = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+    const dayName = days[d.getDay()];
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${dayName}, ${day}/${month}/${year}`;
+  };
 
   return (
     <header className="app-header">
-      {/* Top Row: Store Picker & Quick Accessibility Controls */}
+      {/* Top Row: Store Picker & Realtime Clock */}
       <div className="store-selector-row">
         <div className="relative">
           <button 
@@ -101,51 +117,24 @@ export const Header = () => {
           )}
         </div>
 
-        {/* Quick Utilities: Senior Mode & Glossary */}
-        <div style={{ display: 'flex', gap: '6px' }}>
-          <button
-            id="senior-mode-btn"
-            title="Chế độ Bác Ba (Cỡ chữ to)"
-            onClick={() => {
-              setIsSeniorMode(!isSeniorMode);
-              playSound('click');
-            }}
-            style={{
-              padding: '6px 10px',
-              borderRadius: '9999px',
-              border: isSeniorMode ? '1.5px solid #059669' : '1px solid #E2E8F0',
-              background: isSeniorMode ? '#ECFDF5' : '#FFFFFF',
-              color: isSeniorMode ? '#059669' : '#475569',
-              fontSize: '0.78rem',
-              fontWeight: 700,
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              cursor: 'pointer'
-            }}
-          >
-            <Glasses size={16} />
-            <span>{isSeniorMode ? 'Chữ to: BẬT' : 'Chữ to'}</span>
-          </button>
-
-          <button
-            id="glossary-btn"
-            title="Từ điển tiếng Việt dễ hiểu"
-            onClick={() => openGlossary()}
-            style={{
-              padding: '6px',
-              borderRadius: '50%',
-              border: '1px solid #E2E8F0',
-              background: '#FFFFFF',
-              color: '#059669',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer'
-            }}
-          >
-            <HelpCircle size={18} />
-          </button>
+        {/* Realtime Clock Badge */}
+        <div style={{
+          background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
+          color: '#FFFFFF',
+          borderRadius: '9999px',
+          padding: '6px 12px',
+          fontSize: '0.78rem',
+          fontWeight: 700,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          border: '1px solid #334155'
+        }}>
+          <Clock size={14} color="#34D399" />
+          <span style={{ color: '#CBD5E1' }}>{formatDate(time)}</span>
+          <span style={{ color: '#34D399', fontVariantNumeric: 'tabular-nums', fontWeight: 800, fontFamily: 'monospace' }}>
+            {formatTime(time)}
+          </span>
         </div>
       </div>
 
