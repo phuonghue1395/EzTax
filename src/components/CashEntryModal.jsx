@@ -57,6 +57,17 @@ export const CashEntryModal = () => {
     }
   };
 
+  const handleAppendZeros = (zeros) => {
+    playSound('click');
+    setAmountStr(prev => {
+      if (!prev || prev === '0') return '1' + zeros;
+      return prev + zeros;
+    });
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
   const handleSave = () => {
     const targetRecord = dailyCashClosings.find(d => d.date === selectedDayDate);
     if (targetRecord && targetRecord.status === 'closed') {
@@ -306,19 +317,57 @@ export const CashEntryModal = () => {
           </div>
         </div>
 
-        {/* Quick Amount Presets */}
+        {/* Quick Amount Presets & Zero Append */}
         <div style={{ marginBottom: '20px' }}>
-          <div style={{ fontSize: '0.78rem', color: '#64748B', fontWeight: 700, marginBottom: '6px' }}>
-            Gợi ý nhanh số tròn:
+          <div style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 700, marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Sparkles size={14} color="#059669" />
+            <span>Thêm nhanh 000 & số gợi ý:</span>
           </div>
-          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            {[2000000, 3000000, 3500000, 4000000, 5000000, 6000000, 8000000].map((val) => (
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+            {/* Append zeros buttons */}
+            <button
+              id="append-thousand-btn"
+              className="preset-chip"
+              onClick={() => handleAppendZeros('000')}
+              style={{
+                background: '#ECFDF5',
+                color: '#047857',
+                border: '1.5px solid #A7F3D0',
+                fontWeight: 800,
+                fontSize: '0.92rem',
+                padding: '6px 14px'
+              }}
+              title="Thêm 3 số 0 (.000)"
+            >
+              + .000
+            </button>
+            <button
+              id="append-million-btn"
+              className="preset-chip"
+              onClick={() => handleAppendZeros('000000')}
+              style={{
+                background: '#ECFDF5',
+                color: '#047857',
+                border: '1.5px solid #A7F3D0',
+                fontWeight: 800,
+                fontSize: '0.92rem',
+                padding: '6px 14px'
+              }}
+              title="Thêm 6 số 0 (000.000)"
+            >
+              + 000.000
+            </button>
+
+            <div style={{ width: '1px', height: '22px', background: '#CBD5E1', margin: '0 2px' }} />
+
+            {/* Quick preset amounts */}
+            {[500000, 1000000, 2000000, 3000000, 5000000, 8000000].map((val) => (
               <button
                 key={val}
                 className="preset-chip"
                 onClick={() => handleQuickSet(val)}
               >
-                {val / 1000000} triệu
+                {formatVND(val)}
               </button>
             ))}
           </div>

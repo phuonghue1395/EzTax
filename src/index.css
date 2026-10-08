@@ -740,6 +740,18 @@ body {
   font-size: 0.92rem;
   font-weight: 700;
   cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.preset-chip:hover {
+  background: #D1FAE5;
+  border-color: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.15);
+}
+
+.preset-chip:active {
+  transform: translateY(0);
 }
 
 /* Toast */
