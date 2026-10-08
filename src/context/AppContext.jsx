@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { MERCHANT_PHO_BAC_BA, INITIAL_TRANSACTIONS, INITIAL_DAILY_CASH_CLOSINGS, GLOSSARY_ITEMS } from '../utils/mockData';
-import { calculateTax, TAX_MANDATORY_SCALE } from '../utils/taxRules';
+import { calculateTax, TAX_MANDATORY_SCALE, TAX_LEGAL_FRAMEWORK, BUSINESS_SECTORS } from '../utils/taxRules';
 import { playSound } from '../utils/sound';
 import confetti from 'canvas-confetti';
 
@@ -11,6 +11,12 @@ export const AppProvider = ({ children }) => {
   const [activeTab, setActiveTab] = useState('home'); // 'home' | 'reconcile' | 'tax' | 'verify' | 'advisor'
   const [isSeniorMode, setIsSeniorMode] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
+
+  // Sector & PIT Method selection (Theo Nghị định 141/2026/NĐ-CP)
+  const [selectedSectorId, setSelectedSectorId] = useState('food_beverage');
+  const [pitMethod, setPitMethod] = useState('revenue'); // 'revenue' (PP1) | 'income' (PP2)
+  const [quarterExpenses, setQuarterExpenses] = useState(merchant.quarterSummary.totalExpenses || 760000000);
+  const [todayExpenses, setTodayExpenses] = useState(merchant.summaryToday.estimatedExpensesToday || 9500000);
 
   // Transactions State
   const [transactions, setTransactions] = useState(INITIAL_TRANSACTIONS);
@@ -63,9 +69,32 @@ export const AppProvider = ({ children }) => {
   // Check if yesterday cash was forgotten
   const isYesterdayCashForgotten = dailyCashClosings.some(d => d.date === '07/10/2026' && d.status === 'forgotten');
 
-  // Tax calculation
-  const taxInfo = calculateTax(todayRevenue);
-  const quarterTaxInfo = calculateTax(merchant.quarterSummary.totalRevenue);
+  // Tax calculations theo Nghị định 141/2026/NĐ-CP
+  const taxInfo = calculateTax({
+    revenue: todayRevenue,
+    expenses: todayExpenses,
+    sectorId: selectedSectorId,
+    pitMethod: pitMethod,
+    isQuarterly: false,
+    annualEstimatedRevenue: merchant.businessScale.annualProjectedRevenue
+  });
+
+  const quarterTaxInfo = calculateTax({
+    revenue: merchant.quarterSummary.totalRevenue,
+    expenses: quarterExpenses,
+    sectorId: selectedSectorId,
+    pitMethod: pitMethod,
+    isQuarterly: true,
+    annualEstimatedRevenue: merchant.businessScale.annualProjectedRevenue
+  });
+
+  const annualTaxInfo = calculateTax({
+    revenue: merchant.businessScale.annualProjectedRevenue,
+    expenses: merchant.businessScale.annualProjectedExpenses,
+    sectorId: selectedSectorId,
+    pitMethod: pitMethod,
+    isQuarterly: false
+  });
 
   // Close daily cash total (1 time per day at end of day)
   const closeDailyCash = (dateStr, amount) => {
@@ -176,6 +205,18 @@ export const AppProvider = ({ children }) => {
     activeTab,
     setActiveTab,
 
+    // Tax settings & state
+    selectedSectorId,
+    setSelectedSectorId,
+    pitMethod,
+    setPitMethod,
+    quarterExpenses,
+    setQuarterExpenses,
+    todayExpenses,
+    setTodayExpenses,
+    businessSectors: BUSINESS_SECTORS,
+    decreeInfo: TAX_LEGAL_FRAMEWORK,
+
     // Data & Calculations
     transactions,
     dailyCashClosings,
@@ -193,6 +234,7 @@ export const AppProvider = ({ children }) => {
     issueCount,
     taxInfo,
     quarterTaxInfo,
+    annualTaxInfo,
     scaleInfo: TAX_MANDATORY_SCALE,
 
     // Actions
