@@ -35,6 +35,7 @@ export const HomeScreen = () => {
     pendingCount, 
     issueCount, 
     taxInfo,
+    quarterTaxInfo,
     setCashModalOpen,
     setSelectedTx,
     setDiscrepancyTx,
@@ -241,7 +242,7 @@ export const HomeScreen = () => {
           </div>
         </div>
 
-        {/* CARD 3: (3) Thuế Quý 4/2026 (Doanh thu > 1 tỷ/năm) */}
+        {/* CARD 3: (3) Thuế Quý 4/2026 (Nghị định 141/2026/NĐ-CP) */}
         <div className="web-tax-card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
             <div style={{ fontSize: '1rem', fontWeight: 800, color: '#0F172A' }}>
@@ -249,16 +250,16 @@ export const HomeScreen = () => {
             </div>
             <span className="status-triple-badge badge-matched">
               <ShieldCheck size={14} />
-              <span>🟢 Kê khai Quý</span>
+              <span>🟢 NĐ 141/2026</span>
             </span>
           </div>
 
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
             <div style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 600 }}>
-              Thuế Quý (4.5% = 3% GTGT + 1.5% TNCN):
+              Tiền thuế Quý (GTGT + TNCN):
             </div>
             <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#059669', fontVariantNumeric: 'tabular-nums', margin: '4px 0 8px 0' }}>
-              {formatVND(merchant.quarterSummary.estimatedTax)}
+              {formatVND(quarterTaxInfo.totalTax)}
             </div>
 
             <div style={{
@@ -270,7 +271,7 @@ export const HomeScreen = () => {
               lineHeight: '1.45',
               border: '1px solid #E2E8F0'
             }}>
-              📜 <strong>Doanh thu Quý: {formatVND(merchant.quarterSummary.totalRevenue)}</strong> (&gt; 1 tỷ/năm). Bắt buộc kê khai 3 tháng/lần và nộp trước ngày 30 của tháng đầu quý sau.
+              📜 <strong>Doanh thu Quý: {formatVND(merchant.quarterSummary.totalRevenue)}</strong> (&gt; 1 tỷ/năm). Thuế GTGT 3% ({formatVND(quarterTaxInfo.vatAmount)}) + Thuế TNCN ({formatVND(quarterTaxInfo.pitAmount)}).
             </div>
           </div>
 
