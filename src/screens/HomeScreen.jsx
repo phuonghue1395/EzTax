@@ -140,8 +140,8 @@ export const HomeScreen = () => {
 
         {/* CARD 2: GIAO DỊCH CẦN XỬ LÝ & ĐỐI SOÁT */}
         <div className="web-action-card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-            <div style={{ fontSize: '1rem', fontWeight: 800, color: '#0F172A', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#0F172A', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span>Xử Lý Giao Dịch & Đối Soát</span>
             </div>
           </div>
@@ -152,24 +152,24 @@ export const HomeScreen = () => {
               <div style={{
                 background: '#FEF2F2',
                 border: '1.5px solid #FECACA',
-                borderRadius: '16px',
-                padding: '14px'
+                borderRadius: '12px',
+                padding: '10px 12px'
               }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                  <span className="status-triple-badge badge-issue">
-                    <XCircle size={14} />
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                  <span className="status-triple-badge badge-issue" style={{ fontSize: '0.74rem', padding: '2px 6px' }}>
+                    <XCircle size={13} />
                     <span>🔴 CẦN XÁC NHẬN</span>
                   </span>
-                  <span style={{ fontWeight: 800, color: '#DC2626' }}>+{formatVND(issueTx.amount)}</span>
+                  <span style={{ fontWeight: 800, color: '#DC2626', fontSize: '0.92rem' }}>+{formatVND(issueTx.amount)}</span>
                 </div>
-                <div style={{ fontSize: '0.88rem', color: '#0F172A', fontWeight: 600, marginBottom: '8px' }}>
+                <div style={{ fontSize: '0.82rem', color: '#0F172A', fontWeight: 600, marginBottom: '6px' }}>
                   "{issueTx.description}"
                 </div>
                 <button
                   id="resolve-issue-home-btn"
                   className="btn-primary-cta btn-danger-cta"
                   onClick={() => setDiscrepancyTx(issueTx)}
-                  style={{ width: '100%', minHeight: '40px', fontSize: '0.86rem' }}
+                  style={{ width: '100%', minHeight: '34px', fontSize: '0.82rem', padding: '0 10px' }}
                 >
                   <span>Xác nhận: Tiền cá nhân (Không tính thuế)</span>
                 </button>
@@ -178,25 +178,25 @@ export const HomeScreen = () => {
               <div style={{
                 background: '#FFFBEB',
                 border: '1.5px solid #FDE68A',
-                borderRadius: '16px',
-                padding: '14px'
+                borderRadius: '12px',
+                padding: '10px 12px'
               }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                  <span className="status-triple-badge badge-pending">
-                    <AlertTriangle size={14} />
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+                  <span className="status-triple-badge badge-pending" style={{ fontSize: '0.74rem', padding: '2px 6px' }}>
+                    <AlertTriangle size={13} />
                     <span>🟡 CHỜ XUẤT HÓA ĐƠN</span>
                   </span>
-                  <span style={{ fontWeight: 800, color: '#D97706' }}>+{formatVND(pendingTx.amount)}</span>
+                  <span style={{ fontWeight: 800, color: '#D97706', fontSize: '0.92rem' }}>+{formatVND(pendingTx.amount)}</span>
                 </div>
-                <div style={{ fontSize: '0.88rem', color: '#0F172A', fontWeight: 600, marginBottom: '8px' }}>
+                <div style={{ fontSize: '0.82rem', color: '#0F172A', fontWeight: 600, marginBottom: '6px' }}>
                   {pendingTx.description}
                 </div>
                 <button
                   className="btn-primary-cta btn-warning-cta"
                   onClick={() => setSelectedTx(pendingTx)}
-                  style={{ width: '100%', minHeight: '40px', fontSize: '0.86rem' }}
+                  style={{ width: '100%', minHeight: '34px', fontSize: '0.82rem', padding: '0 10px' }}
                 >
-                  <Receipt size={16} />
+                  <Receipt size={15} />
                   <span>Phát hành Hóa Đơn Điện Tử</span>
                 </button>
               </div>
@@ -204,15 +204,15 @@ export const HomeScreen = () => {
               <div style={{
                 background: '#ECFDF5',
                 border: '1.5px solid #A7F3D0',
-                borderRadius: '16px',
-                padding: '18px',
+                borderRadius: '12px',
+                padding: '12px 14px',
                 textAlign: 'center'
               }}>
-                <CheckCircle2 size={32} color="#059669" style={{ margin: '0 auto 6px auto' }} />
-                <div style={{ fontWeight: 800, color: '#065F46', fontSize: '1.05rem' }}>
+                <CheckCircle2 size={26} color="#059669" style={{ margin: '0 auto 4px auto' }} />
+                <div style={{ fontWeight: 800, color: '#065F46', fontSize: '0.95rem' }}>
                   🟢 MỌI THỨ ĐÃ KHỚP 100%!
                 </div>
-                <div style={{ fontSize: '0.84rem', color: '#047857', marginTop: '2px' }}>
+                <div style={{ fontSize: '0.8rem', color: '#047857', marginTop: '2px' }}>
                   Toàn bộ giao dịch ngân hàng & ví điện tử đã đối soát xong với HĐĐT.
                 </div>
               </div>
@@ -222,44 +222,44 @@ export const HomeScreen = () => {
 
         {/* CARD 3: Thuế Quý 4/2026 Tạm Tính */}
         <div className="web-tax-card">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-            <div style={{ fontSize: '1rem', fontWeight: 800, color: '#0F172A' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+            <div style={{ fontSize: '0.92rem', fontWeight: 800, color: '#0F172A' }}>
               Thuế Quý 4/2026 Tạm Tính
             </div>
-            <span className="status-triple-badge badge-matched">
-              <ShieldCheck size={14} />
+            <span className="status-triple-badge badge-matched" style={{ fontSize: '0.74rem', padding: '2px 6px' }}>
+              <ShieldCheck size={13} />
               <span>🟢 NĐ 141/2026</span>
             </span>
           </div>
 
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-            <div style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 600 }}>
+            <div style={{ fontSize: '0.78rem', color: '#64748B', fontWeight: 600 }}>
               Tiền thuế Quý (GTGT + TNCN):
             </div>
-            <div style={{ fontSize: '1.85rem', fontWeight: 800, color: '#059669', fontVariantNumeric: 'tabular-nums', margin: '4px 0 8px 0' }}>
+            <div style={{ fontSize: '1.6rem', fontWeight: 800, color: '#059669', fontVariantNumeric: 'tabular-nums', margin: '2px 0 6px 0' }}>
               {formatVND(quarterTaxInfo.totalTax)}
             </div>
 
             <div style={{
               background: '#F8FAFC',
-              borderRadius: '12px',
-              padding: '10px 12px',
-              fontSize: '0.82rem',
+              borderRadius: '10px',
+              padding: '8px 10px',
+              fontSize: '0.78rem',
               color: '#475569',
-              lineHeight: '1.45',
+              lineHeight: '1.4',
               border: '1px solid #E2E8F0'
             }}>
               📜 <strong>Doanh thu Quý: {formatVND(merchant.quarterSummary.totalRevenue)}</strong> (&gt; 1 tỷ/năm). Thuế GTGT 3% ({formatVND(quarterTaxInfo.vatAmount)}) + Thuế TNCN ({formatVND(quarterTaxInfo.pitAmount)}).
             </div>
           </div>
 
-          <div style={{ marginTop: '14px' }}>
+          <div style={{ marginTop: '8px' }}>
             <button
               className="btn-primary-cta"
               onClick={() => setActiveTab('tax')}
-              style={{ width: '100%', minHeight: '42px', fontSize: '0.88rem' }}
+              style={{ width: '100%', minHeight: '34px', fontSize: '0.84rem' }}
             >
-              <Calculator size={18} />
+              <Calculator size={16} />
               <span>Xem tờ khai Mẫu 01/CNKD</span>
             </button>
           </div>

@@ -6,7 +6,7 @@ export const MERCHANT_PHO_BAC_BA = {
   id: 'pho_bac_ba',
   storeName: 'Quán Phở Bác Ba',
   brandName: 'Phở Gia Truyền Bác Ba Hà Nội',
-  ownerName: 'Nguyễn Văn Ba (Bác Ba)',
+  ownerName: 'Nguyễn Văn Ba',
   taxCode: '0108928374',
   address: '48 Hàng Điếu, P. Cửa Đông, Hoàn Kiếm, Hà Nội',
   sectorId: 'food_beverage',
