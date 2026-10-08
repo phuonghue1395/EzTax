@@ -90,7 +90,7 @@ export const ReconciliationScreen = () => {
             style={{ color: '#2563EB', borderColor: '#BFDBFE', background: '#EFF6FF' }}
           >
             <Upload size={18} />
-            <span>Tải lên file sao kê QR/Bank</span>
+            <span>Tải lên sao kê</span>
           </button>
 
           <button 
@@ -142,9 +142,9 @@ export const ReconciliationScreen = () => {
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
                 <span style={{ fontWeight: 800, fontSize: '0.88rem', color: '#0F172A' }}>{d.dayLabel}</span>
-                {d.status === 'closed' && <span style={{ fontSize: '0.74rem', color: '#065F46', fontWeight: 700 }}>🟢 Đã chốt</span>}
-                {d.status === 'forgotten' && <span style={{ fontSize: '0.74rem', color: '#DC2626', fontWeight: 800 }}>🔴 Chưa chốt</span>}
-                {d.status === 'unclosed' && <span style={{ fontSize: '0.74rem', color: '#D97706', fontWeight: 700 }}>🟡 Đang mở</span>}
+                {d.status === 'closed' && <span style={{ fontSize: '0.74rem', color: '#065F46', fontWeight: 700 }}>🟢 Đã kê khai</span>}
+                {d.status === 'forgotten' && <span style={{ fontSize: '0.74rem', color: '#DC2626', fontWeight: 800 }}>🔴 Chưa kê khai</span>}
+                {d.status === 'unclosed' && <span style={{ fontSize: '0.74rem', color: '#D97706', fontWeight: 700 }}>🟡 Mở hôm nay</span>}
               </div>
               <div style={{ fontSize: '1.25rem', fontWeight: 800, color: d.status === 'forgotten' ? '#DC2626' : '#064E3B', fontVariantNumeric: 'tabular-nums' }}>
                 {formatVND(d.amount)}
@@ -187,10 +187,10 @@ export const ReconciliationScreen = () => {
             id="auto-reconcile-web-btn"
             className="btn-primary-cta"
             onClick={autoReconcileAll}
-            style={{ fontSize: '0.92rem', padding: '0 24px' }}
+            style={{ fontSize: '0.9rem', padding: '0 20px', whiteSpace: 'nowrap' }}
           >
             <Sparkles size={18} />
-            <span>TỰ ĐỘNG ĐỐI SOÁT & KHỚP TẤT CẢ</span>
+            <span>Tự động đối soát tất cả</span>
           </button>
         </div>
       )}
@@ -199,12 +199,12 @@ export const ReconciliationScreen = () => {
       <div className="web-section-container">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '18px', flexWrap: 'wrap', gap: '12px' }}>
           {/* Filters */}
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             {[
               { id: 'all', label: 'Tất cả giao dịch' },
               { id: 'matched', label: '🟢 Đã khớp HĐĐT' },
               { id: 'pending', label: '🟡 Chờ xuất HĐ' },
-              { id: 'issue', label: '🔴 Cần xác nhận Tiền cá nhân' }
+              { id: 'issue', label: '🔴 Cần xác nhận' }
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -266,7 +266,7 @@ export const ReconciliationScreen = () => {
               {filteredList.map((tx) => (
                 <tr key={tx.id}>
                   <td>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', whiteSpace: 'nowrap' }}>
                       <div style={{
                         width: '36px',
                         height: '36px',
@@ -274,68 +274,70 @@ export const ReconciliationScreen = () => {
                         background: tx.source === 'bank' ? '#EFF6FF' : (tx.source === 'wallet' ? '#FFFBEB' : '#ECFDF5'),
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        flexShrink: 0
                       }}>
                         {getSourceIcon(tx.source)}
                       </div>
-                      <span style={{ fontWeight: 700 }}>{tx.sourceName}</span>
+                      <span style={{ fontWeight: 700, whiteSpace: 'nowrap' }}>{tx.sourceName}</span>
                     </div>
                   </td>
 
-                  <td style={{ color: '#64748B', fontSize: '0.88rem' }}>
+                  <td style={{ color: '#64748B', fontSize: '0.88rem', whiteSpace: 'nowrap' }}>
                     {tx.time}
                   </td>
 
-                  <td>
-                    <div style={{ fontWeight: 700, color: '#0F172A' }}>{tx.description}</div>
-                    <div style={{ fontSize: '0.8rem', color: '#64748B' }}>{tx.note}</div>
+                  <td style={{ maxWidth: '340px' }}>
+                    <div className="table-cell-ellipsis" style={{ fontWeight: 700, color: '#0F172A' }}>{tx.description}</div>
+                    <div className="table-cell-ellipsis" style={{ fontSize: '0.8rem', color: '#64748B' }}>{tx.note}</div>
                   </td>
 
-                  <td>
+                  <td style={{ whiteSpace: 'nowrap' }}>
                     <span style={{
                       fontWeight: 800,
                       fontSize: '1.05rem',
                       color: tx.isTaxable === false ? '#64748B' : (tx.status === 'issue' ? '#DC2626' : '#059669'),
-                      fontVariantNumeric: 'tabular-nums'
+                      fontVariantNumeric: 'tabular-nums',
+                      whiteSpace: 'nowrap'
                     }}>
                       +{formatVND(tx.amount)}
                     </span>
                   </td>
 
-                  <td>
+                  <td style={{ whiteSpace: 'nowrap' }}>
                     {tx.invoiceId ? (
-                      <span style={{ color: '#059669', fontWeight: 700 }}>
+                      <span style={{ color: '#059669', fontWeight: 700, whiteSpace: 'nowrap' }}>
                         ✓ {tx.invoiceId}
                       </span>
                     ) : (
-                      <span style={{ color: '#94A3B8', fontSize: '0.84rem' }}>
+                      <span style={{ color: '#94A3B8', fontSize: '0.84rem', whiteSpace: 'nowrap' }}>
                         Chưa xuất
                       </span>
                     )}
                   </td>
 
-                  <td>
+                  <td style={{ whiteSpace: 'nowrap' }}>
                     {tx.status === 'matched' && (
                       <span className="status-triple-badge badge-matched">
                         <CheckCircle2 size={14} />
-                        <span>🟢 Đã khớp</span>
+                        <span>Đã khớp</span>
                       </span>
                     )}
                     {tx.status === 'pending' && (
                       <span className="status-triple-badge badge-pending">
                         <AlertTriangle size={14} />
-                        <span>🟡 Chờ xuất HĐ</span>
+                        <span>Chờ xuất HĐ</span>
                       </span>
                     )}
                     {tx.status === 'issue' && (
                       <span className="status-triple-badge badge-issue">
                         <XCircle size={14} />
-                        <span>🔴 Cần xác nhận</span>
+                        <span>Cần xác nhận</span>
                       </span>
                     )}
                   </td>
 
-                  <td style={{ textAlign: 'right' }}>
+                  <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
                     {tx.status === 'issue' ? (
                       <button
                         className="btn-primary-cta btn-danger-cta"

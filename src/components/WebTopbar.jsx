@@ -27,49 +27,21 @@ export const WebTopbar = () => {
     <header className="web-topbar">
       {/* Left: Store Location & Tax Scale Context */}
       <div className="topbar-left">
-        <div className="store-context-pill">
-          <MapPin size={16} color="#059669" />
-          <span>{merchant.address}</span>
-          <span style={{ color: '#94A3B8' }}>•</span>
-          <span>MST: <strong>{merchant.taxCode}</strong></span>
+        <div className="store-context-pill" style={{ maxWidth: '320px', overflow: 'hidden' }}>
+          <MapPin size={16} color="#059669" style={{ flexShrink: 0 }} />
+          <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{merchant.address}</span>
+          <span style={{ color: '#94A3B8', flexShrink: 0 }}>•</span>
+          <span style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>MST: <strong>{merchant.taxCode}</strong></span>
         </div>
 
         <div className="topbar-sync-status">
           <span className="pulse-dot"></span>
-          <span>Tự động gom VietQR & HĐĐT máy tính tiền</span>
+          <span>Tự động gom VietQR & HĐĐT</span>
         </div>
       </div>
 
       {/* Right: Actions */}
       <div className="topbar-right">
-        {/* Upload Statement Button */}
-        <button
-          id="web-topbar-upload-btn"
-          className="btn-secondary-outline"
-          onClick={() => {
-            setUploadModalOpen(true);
-            playSound('click');
-          }}
-          title="Tải lên file sao kê Excel/CSV/PDF từ Vietcombank/MoMo"
-          style={{ padding: '0 16px', color: '#2563EB', borderColor: '#BFDBFE', background: '#EFF6FF' }}
-        >
-          <Upload size={18} />
-          <span>Tải lên sao kê QR/Bank</span>
-        </button>
-
-        {/* Tax Form Shortcut */}
-        <button
-          className="btn-secondary-outline"
-          onClick={() => {
-            setTaxReportModalOpen(true);
-            playSound('click');
-          }}
-          style={{ padding: '0 14px' }}
-        >
-          <FileText size={18} color="#059669" />
-          <span>Tờ khai thuế Quý</span>
-        </button>
-
         {/* Primary CTA: Chốt Tổng Tiền Mặt Cuối Ngày */}
         <button
           id="web-topbar-cash-btn"
@@ -84,7 +56,7 @@ export const WebTopbar = () => {
           }}
         >
           {isYesterdayCashForgotten ? <AlertTriangle size={18} /> : <Banknote size={18} />}
-          <span>{isYesterdayCashForgotten ? '⚠️ CHỐT TIỀN MẶT HÔM QUA' : 'CHỐT TIỀN MẶT CUỐI NGÀY'}</span>
+          <span>{isYesterdayCashForgotten ? 'Chốt tiền mặt hôm qua' : 'Chốt tiền mặt cuối ngày'}</span>
         </button>
       </div>
     </header>

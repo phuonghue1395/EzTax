@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
-import { X, Check, Banknote, Calendar, AlertTriangle, CheckCircle2, History, Sparkles, Delete } from 'lucide-react';
+import { X, Check, Banknote, Calendar, AlertTriangle, CheckCircle2, Sparkles, Keyboard } from 'lucide-react';
 import { formatVND } from '../utils/taxRules';
 
 export const CashEntryModal = () => {
@@ -18,34 +18,40 @@ export const CashEntryModal = () => {
   const [selectedDayDate, setSelectedDayDate] = useState(yesterdayRecord ? '07/10/2026' : '08/10/2026');
   const [amountStr, setAmountStr] = useState(yesterdayRecord ? '3950000' : '3600000');
 
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (cashModalOpen) {
+      setTimeout(() => {
+        inputRef.current?.focus();
+        inputRef.current?.select();
+      }, 100);
+    }
+  }, [cashModalOpen, selectedDayDate]);
+
   if (!cashModalOpen) return null;
 
-  const currentRecord = dailyCashClosings.find(d => d.date === selectedDayDate);
   const isYesterday = selectedDayDate === '07/10/2026';
 
-  const handleNumClick = (val) => {
-    playSound('click');
-    if (amountStr === '0' || amountStr === '') {
-      setAmountStr(val);
-    } else {
-      if (amountStr.length < 9) {
-        setAmountStr(amountStr + val);
-      }
-    }
+  const handleInputChange = (e) => {
+    // Keep only numbers
+    const rawVal = e.target.value.replace(/\D/g, '');
+    setAmountStr(rawVal);
   };
 
-  const handleBackspace = () => {
-    playSound('click');
-    if (amountStr.length > 1) {
-      setAmountStr(amountStr.slice(0, -1));
-    } else {
-      setAmountStr('0');
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSave();
     }
   };
 
   const handleQuickSet = (val) => {
     playSound('click');
     setAmountStr(String(val));
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
 
   const handleSave = () => {
@@ -64,13 +70,14 @@ export const CashEntryModal = () => {
   };
 
   const numericValue = Number(amountStr) || 0;
+  const displayFormatted = amountStr ? Number(amountStr).toLocaleString('vi-VN') : '';
 
   return (
     <div className="modal-overlay" onClick={() => setCashModalOpen(false)}>
       <div 
         className="web-modal-box" 
         onClick={(e) => e.stopPropagation()}
-        style={{ maxWidth: '680px' }}
+        style={{ maxWidth: '640px' }}
       >
         {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
@@ -109,7 +116,7 @@ export const CashEntryModal = () => {
         </div>
 
         {/* Warning If Yesterday was Forgotten */}
-        {yesterdayRecord && (
+        {yesterdayRecord && selectedDayDate === '07/10/2026' && (
           <div style={{
             background: '#FEF2F2',
             border: '2px solid #FECACA',
@@ -123,7 +130,7 @@ export const CashEntryModal = () => {
             <AlertTriangle size={22} color="#DC2626" style={{ flexShrink: 0, marginTop: '2px' }} />
             <div>
               <div style={{ fontSize: '0.94rem', fontWeight: 800, color: '#991B1B' }}>
-                Phát hiện: Hôm qua (07/10) bác chưa chốt sổ tiền mặt!
+                Phát hiện: Ngày 07/10 chưa hoàn thành kê khai tiền mặt!
               </div>
               <div style={{ fontSize: '0.84rem', color: '#7F1D1D', marginTop: '3px' }}>
                 Theo luật thuế, <strong>phải hoàn thiện kê khai riêng của ngày hôm trước</strong>, tuyệt đối <strong>không kê khai gộp vào hôm sau</strong>.
@@ -132,125 +139,174 @@ export const CashEntryModal = () => {
           </div>
         )}
 
-        {/* Day Selector Tabs (Hôm qua vs Hôm nay) */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '16px' }}>
-          <button
-            onClick={() => {
-              setSelectedDayDate('07/10/2026');
-              setAmountStr('3950000');
-              playSound('click');
-            }}
-            style={{
-              padding: '12px',
-              borderRadius: '14px',
-              border: selectedDayDate === '07/10/2026' ? '2px solid #DC2626' : '1px solid #E2E8F0',
-              background: selectedDayDate === '07/10/2026' ? '#FEF2F2' : '#FFFFFF',
-              color: selectedDayDate === '07/10/2026' ? '#991B1B' : '#64748B',
-              fontWeight: 800,
-              fontSize: '0.92rem',
-              cursor: 'pointer',
-              textAlign: 'left'
-            }}
-          >
-            <div style={{ fontSize: '0.78rem', color: '#DC2626', fontWeight: 700 }}>
-              {yesterdayRecord ? '🔴 CHƯA KÊ KHAI' : '🟢 ĐÃ CHỐT'}
+        {/* Date Calendar Tool (Tool Ngày / Lịch Kê Khai) */}
+        <div style={{ marginBottom: '16px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <div style={{ fontSize: '0.84rem', fontWeight: 700, color: '#475569', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Calendar size={16} color="#059669" />
+              <span>Chọn ngày trong sổ lịch chốt tiền mặt:</span>
             </div>
-            <div>Sổ Ngày Hôm Qua (07/10)</div>
-          </button>
+            {/* Status Legend */}
+            <div style={{ display: 'flex', gap: '10px', fontSize: '0.74rem', fontWeight: 700 }}>
+              <span style={{ color: '#059669' }}>🟢 Đã kê khai</span>
+              <span style={{ color: '#DC2626' }}>🔴 Chưa kê khai</span>
+              <span style={{ color: '#D97706' }}>🟡 Mở hôm nay</span>
+            </div>
+          </div>
 
-          <button
-            onClick={() => {
-              setSelectedDayDate('08/10/2026');
-              setAmountStr('3600000');
-              playSound('click');
-            }}
-            style={{
-              padding: '12px',
-              borderRadius: '14px',
-              border: selectedDayDate === '08/10/2026' ? '2px solid #059669' : '1px solid #E2E8F0',
-              background: selectedDayDate === '08/10/2026' ? '#ECFDF5' : '#FFFFFF',
-              color: selectedDayDate === '08/10/2026' ? '#065F46' : '#64748B',
-              fontWeight: 800,
-              fontSize: '0.92rem',
-              cursor: 'pointer',
-              textAlign: 'left'
-            }}
-          >
-            <div style={{ fontSize: '0.78rem', color: '#059669', fontWeight: 700 }}>🟡 ĐANG MỞ SỔ</div>
-            <div>Sổ Ngày Hôm Nay (08/10)</div>
-          </button>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: '8px'
+          }}>
+            {dailyCashClosings.map((item) => {
+              const isSelected = selectedDayDate === item.date;
+              const isClosed = item.status === 'closed';
+              const isForgotten = item.status === 'forgotten';
+              const isUnclosed = item.status === 'unclosed';
+
+              let borderColor = '#E2E8F0';
+              let bgColor = '#FFFFFF';
+              let textColor = '#0F172A';
+              let badgeBg = '#ECFDF5';
+              let badgeColor = '#065F46';
+              let badgeText = '🟢 Đã kê khai';
+
+              if (isClosed) {
+                badgeText = '🟢 Đã kê khai';
+                badgeBg = '#ECFDF5';
+                badgeColor = '#059669';
+                if (isSelected) {
+                  borderColor = '#059669';
+                  bgColor = '#ECFDF5';
+                }
+              } else if (isForgotten) {
+                badgeText = '🔴 Chưa kê khai';
+                badgeBg = '#FEF2F2';
+                badgeColor = '#DC2626';
+                if (isSelected) {
+                  borderColor = '#DC2626';
+                  bgColor = '#FEF2F2';
+                  textColor = '#991B1B';
+                }
+              } else if (isUnclosed) {
+                badgeText = '🟡 Mở hôm nay';
+                badgeBg = '#FFFBEB';
+                badgeColor = '#D97706';
+                if (isSelected) {
+                  borderColor = '#D97706';
+                  bgColor = '#FFFBEB';
+                  textColor = '#92400E';
+                }
+              }
+
+              return (
+                <button
+                  key={item.date}
+                  onClick={() => {
+                    setSelectedDayDate(item.date);
+                    setAmountStr(String(item.amount || 0));
+                    playSound('click');
+                  }}
+                  style={{
+                    padding: '10px 8px',
+                    borderRadius: '12px',
+                    border: isSelected ? `2px solid ${borderColor}` : '1.5px solid #E2E8F0',
+                    background: isSelected ? bgColor : '#FFFFFF',
+                    color: textColor,
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    textAlign: 'left',
+                    transition: 'all 0.15s ease',
+                    boxShadow: isSelected ? '0 4px 12px rgba(0,0,0,0.06)' : 'none'
+                  }}
+                >
+                  <div style={{
+                    fontSize: '0.7rem',
+                    fontWeight: 800,
+                    color: badgeColor,
+                    background: badgeBg,
+                    padding: '2px 6px',
+                    borderRadius: '9999px',
+                    display: 'inline-block',
+                    marginBottom: '4px'
+                  }}>
+                    {badgeText}
+                  </div>
+                  <div style={{ fontSize: '0.86rem', fontWeight: 800, lineHeight: '1.2' }}>
+                    {item.dayLabel}
+                  </div>
+                  <div style={{ fontSize: '0.78rem', color: '#64748B', marginTop: '2px', fontVariantNumeric: 'tabular-nums' }}>
+                    {formatVND(item.amount)}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Big Amount Display */}
+        {/* Input Field for Direct Typing */}
         <div style={{
           background: 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)',
           border: '2px solid #6EE7B7',
           borderRadius: '20px',
-          padding: '18px',
+          padding: '20px',
           textAlign: 'center',
           marginBottom: '16px'
         }}>
-          <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#065F46', textTransform: 'uppercase', marginBottom: '4px' }}>
-            Tổng tiền mặt kiểm đếm trong két ({isYesterday ? 'Hôm qua 07/10' : 'Hôm nay 08/10'}):
+          <div style={{ fontSize: '0.84rem', fontWeight: 700, color: '#065F46', textTransform: 'uppercase', marginBottom: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+            <Keyboard size={16} />
+            <span>Nhập trực tiếp bằng bàn phím ({isYesterday ? 'Hôm qua 07/10' : 'Hôm nay 08/10'}):</span>
           </div>
-          <div style={{
-            fontSize: '2.8rem',
-            fontWeight: 800,
-            color: '#064E3B',
-            fontVariantNumeric: 'tabular-nums',
-            lineHeight: 1.1
-          }}>
-            {formatVND(numericValue)}
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+            <input
+              ref={inputRef}
+              type="text"
+              inputMode="numeric"
+              value={displayFormatted}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+              placeholder="0"
+              style={{
+                fontSize: '2.8rem',
+                fontWeight: 800,
+                color: '#064E3B',
+                textAlign: 'center',
+                background: '#FFFFFF',
+                border: '2px solid #059669',
+                borderRadius: '16px',
+                padding: '8px 16px',
+                width: '100%',
+                maxWidth: '400px',
+                outline: 'none',
+                boxShadow: '0 4px 12px rgba(5, 150, 105, 0.15)'
+              }}
+            />
+            <span style={{ fontSize: '2rem', fontWeight: 800, color: '#064E3B' }}>đ</span>
           </div>
-          <div style={{ fontSize: '0.84rem', color: '#047857', marginTop: '4px' }}>
+
+          <div style={{ fontSize: '0.84rem', color: '#047857', marginTop: '10px' }}>
             Ước tính khoảng <strong>{Math.round(numericValue / 55000)} bát phở</strong> • Thuế 4.5%: <strong>{formatVND(Math.round(numericValue * 0.045))}</strong>
           </div>
         </div>
 
         {/* Quick Amount Presets */}
-        <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '8px', marginBottom: '12px' }}>
-          {[2000000, 3000000, 3500000, 4000000, 5000000, 6000000, 8000000].map((val) => (
-            <button
-              key={val}
-              className="preset-chip"
-              onClick={() => handleQuickSet(val)}
-            >
-              {val / 1000000} triệu
-            </button>
-          ))}
-        </div>
-
-        {/* Keypad */}
-        <div className="numpad-grid" style={{ marginBottom: '16px' }}>
-          {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((digit) => (
-            <button
-              key={digit}
-              className="numpad-btn"
-              onClick={() => handleNumClick(digit)}
-            >
-              {digit}
-            </button>
-          ))}
-          <button
-            className="numpad-btn"
-            style={{ fontSize: '1rem', color: '#059669', fontWeight: 800 }}
-            onClick={() => handleNumClick('000')}
-          >
-            000
-          </button>
-          <button
-            className="numpad-btn"
-            onClick={() => handleNumClick('0')}
-          >
-            0
-          </button>
-          <button
-            className="numpad-btn"
-            style={{ background: '#FEE2E2', color: '#DC2626' }}
-            onClick={handleBackspace}
-          >
-            <Delete size={22} />
-          </button>
+        <div style={{ marginBottom: '20px' }}>
+          <div style={{ fontSize: '0.78rem', color: '#64748B', fontWeight: 700, marginBottom: '6px' }}>
+            Gợi ý nhanh số tròn:
+          </div>
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+            {[2000000, 3000000, 3500000, 4000000, 5000000, 6000000, 8000000].map((val) => (
+              <button
+                key={val}
+                className="preset-chip"
+                onClick={() => handleQuickSet(val)}
+              >
+                {val / 1000000} triệu
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Save Button */}
@@ -264,8 +320,8 @@ export const CashEntryModal = () => {
           <Check size={22} />
           <span>
             {isYesterday 
-              ? `HOÀN THIỆN CHỐT SỔ TIỀN MẶT NGÀY HÔM QUA (${formatVND(numericValue)})` 
-              : `CHỐT SỔ TỔNG TIỀN MẶT CUỐI NGÀY HÔM NAY (${formatVND(numericValue)})`}
+              ? `Hoàn thiện chốt sổ ngày hôm qua (${formatVND(numericValue)})` 
+              : `Chốt sổ tiền mặt cuối ngày hôm nay (${formatVND(numericValue)})`}
           </span>
         </button>
       </div>

@@ -93,10 +93,10 @@ export const HomeScreen = () => {
               setCashModalOpen(true);
               playSound('click');
             }}
-            style={{ fontSize: '0.92rem', padding: '0 20px' }}
+            style={{ fontSize: '0.9rem', padding: '0 18px', whiteSpace: 'nowrap' }}
           >
             <Calendar size={18} />
-            <span>HOÀN THIỆN SỔ NGÀY 07/10</span>
+            <span>Hoàn thiện sổ 07/10</span>
           </button>
         </div>
       )}
@@ -180,7 +180,7 @@ export const HomeScreen = () => {
                   onClick={() => setDiscrepancyTx(issueTx)}
                   style={{ width: '100%', minHeight: '40px', fontSize: '0.86rem' }}
                 >
-                  <span>Chạm để xác nhận: Tiền cá nhân (Không tính thuế)</span>
+                  <span>Xác nhận: Tiền cá nhân (0% thuế)</span>
                 </button>
               </div>
             ) : pendingTx ? (
@@ -207,7 +207,7 @@ export const HomeScreen = () => {
                   style={{ width: '100%', minHeight: '40px', fontSize: '0.86rem' }}
                 >
                   <Receipt size={16} />
-                  <span>Xuất Hóa Đơn Máy Tính Tiền (1 Chạm)</span>
+                  <span>Xuất Hóa Đơn (1 chạm)</span>
                 </button>
               </div>
             ) : (
@@ -235,7 +235,7 @@ export const HomeScreen = () => {
               onClick={() => setActiveTab('reconcile')}
               style={{ width: '100%', minHeight: '40px', fontSize: '0.88rem' }}
             >
-              <span>Xem Toàn Bộ Sổ Đối Soát & Tải Sao Kê</span>
+              <span>Xem sổ đối soát & sao kê</span>
               <ArrowRight size={16} />
             </button>
           </div>
@@ -281,47 +281,30 @@ export const HomeScreen = () => {
               style={{ width: '100%', minHeight: '42px', fontSize: '0.88rem' }}
             >
               <Calculator size={18} />
-              <span>Xem Tờ Khai Mẫu 01/CNKD Theo Quý</span>
+              <span>Xem tờ khai Mẫu 01/CNKD</span>
             </button>
           </div>
         </div>
       </div>
 
       {/* ========================================================== */}
-      {/* RECENT TRANSACTIONS WEB DATA TABLE                         */}
+      {/* RECENT TRANSACTIONS PREVIEW (MINIMAL DASHBOARD PREVIEW)    */}
       {/* ========================================================== */}
       <div className="web-section-container">
         <div className="web-section-header">
           <h2 className="web-section-title">
             <Receipt size={22} color="#059669" />
-            <span>Giao Dịch Gần Nhất & Hóa Đơn Máy Tính Tiền</span>
+            <span>Giao Dịch Gần Nhất</span>
           </h2>
 
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <button
-              className="btn-secondary-outline"
-              onClick={() => {
-                setUploadModalOpen(true);
-                playSound('click');
-              }}
-              style={{ minHeight: '38px', fontSize: '0.86rem', color: '#2563EB', borderColor: '#BFDBFE' }}
-            >
-              <Upload size={16} />
-              <span>Tải file sao kê</span>
-            </button>
-
-            <button
-              className="btn-primary-cta"
-              onClick={() => {
-                setCashModalOpen(true);
-                playSound('click');
-              }}
-              style={{ minHeight: '38px', fontSize: '0.86rem' }}
-            >
-              <Banknote size={16} />
-              <span>Chốt sổ tiền mặt</span>
-            </button>
-          </div>
+          <button
+            className="btn-secondary-outline"
+            onClick={() => setActiveTab('reconcile')}
+            style={{ minHeight: '36px', fontSize: '0.86rem' }}
+          >
+            <span>Xem toàn bộ sổ đối soát</span>
+            <ArrowRight size={16} />
+          </button>
         </div>
 
         {/* Table */}
@@ -339,10 +322,10 @@ export const HomeScreen = () => {
               </tr>
             </thead>
             <tbody>
-              {transactions.map((tx) => (
+              {transactions.slice(0, 4).map((tx) => (
                 <tr key={tx.id}>
                   <td>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', whiteSpace: 'nowrap' }}>
                       <div style={{
                         width: '32px',
                         height: '32px',
@@ -350,68 +333,76 @@ export const HomeScreen = () => {
                         background: tx.source === 'bank' ? '#EFF6FF' : (tx.source === 'wallet' ? '#FFFBEB' : '#ECFDF5'),
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        flexShrink: 0
                       }}>
                         {getSourceIcon(tx.source)}
                       </div>
-                      <span style={{ fontWeight: 700, fontSize: '0.88rem' }}>{tx.sourceName}</span>
+                      <span style={{ fontWeight: 700, fontSize: '0.88rem', whiteSpace: 'nowrap' }}>{tx.sourceName}</span>
                     </div>
                   </td>
 
-                  <td style={{ color: '#64748B', fontSize: '0.85rem' }}>
+                  <td style={{ color: '#64748B', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>
                     {tx.time}
                   </td>
 
-                  <td>
-                    <div style={{ fontWeight: 600, color: '#0F172A' }}>{tx.description}</div>
-                    {tx.note && <div style={{ fontSize: '0.76rem', color: '#64748B' }}>{tx.note}</div>}
+                  <td style={{ maxWidth: '340px' }}>
+                    <div className="table-cell-ellipsis" style={{ fontWeight: 600, color: '#0F172A' }}>
+                      {tx.description}
+                    </div>
+                    {tx.note && (
+                      <div className="table-cell-ellipsis" style={{ fontSize: '0.76rem', color: '#64748B' }}>
+                        {tx.note}
+                      </div>
+                    )}
                   </td>
 
-                  <td>
+                  <td style={{ whiteSpace: 'nowrap' }}>
                     <span style={{
                       fontWeight: 800,
                       fontSize: '1rem',
                       color: tx.isTaxable === false ? '#64748B' : (tx.status === 'issue' ? '#DC2626' : '#059669'),
-                      fontVariantNumeric: 'tabular-nums'
+                      fontVariantNumeric: 'tabular-nums',
+                      whiteSpace: 'nowrap'
                     }}>
                       +{formatVND(tx.amount)}
                     </span>
                   </td>
 
-                  <td>
+                  <td style={{ whiteSpace: 'nowrap' }}>
                     {tx.invoiceId ? (
-                      <span style={{ color: '#059669', fontWeight: 700, fontSize: '0.85rem' }}>
+                      <span style={{ color: '#059669', fontWeight: 700, fontSize: '0.85rem', whiteSpace: 'nowrap' }}>
                         ✓ {tx.invoiceId}
                       </span>
                     ) : (
-                      <span style={{ color: '#94A3B8', fontSize: '0.82rem' }}>
+                      <span style={{ color: '#94A3B8', fontSize: '0.82rem', whiteSpace: 'nowrap' }}>
                         Chưa xuất
                       </span>
                     )}
                   </td>
 
-                  <td>
+                  <td style={{ whiteSpace: 'nowrap' }}>
                     {tx.status === 'matched' && (
                       <span className="status-triple-badge badge-matched">
                         <CheckCircle2 size={14} />
-                        <span>🟢 Đã khớp</span>
+                        <span>Đã khớp</span>
                       </span>
                     )}
                     {tx.status === 'pending' && (
                       <span className="status-triple-badge badge-pending">
                         <AlertTriangle size={14} />
-                        <span>🟡 Chờ xuất HĐ</span>
+                        <span>Chờ xuất HĐ</span>
                       </span>
                     )}
                     {tx.status === 'issue' && (
                       <span className="status-triple-badge badge-issue">
                         <XCircle size={14} />
-                        <span>🔴 Cần xác nhận</span>
+                        <span>Cần xác nhận</span>
                       </span>
                     )}
                   </td>
 
-                  <td style={{ textAlign: 'right' }}>
+                  <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
                     {tx.status === 'issue' ? (
                       <button
                         className="btn-primary-cta btn-danger-cta"

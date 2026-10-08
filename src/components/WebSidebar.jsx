@@ -133,29 +133,11 @@ export const WebSidebar = () => {
           );
         })}
 
-        {/* Upload Statement Button in Sidebar */}
-        <button
-          className="sidebar-nav-item"
-          onClick={() => {
-            setUploadModalOpen(true);
-            playSound('click');
-          }}
-          style={{ marginTop: '8px', background: 'rgba(37, 99, 235, 0.12)', color: '#60A5FA', border: '1px dashed #2563EB' }}
-        >
-          <div className="nav-item-left">
-            <Upload size={20} />
-            <div>
-              <div>Tải Lên Sao Kê</div>
-              <div style={{ fontSize: '0.72rem', opacity: 0.8 }}>Excel / VietQR / MoMo</div>
-            </div>
-          </div>
-        </button>
-
         {/* Dictionary button in sidebar */}
         <button
           className="sidebar-nav-item"
           onClick={() => openGlossary()}
-          style={{ marginTop: '4px', background: 'rgba(16, 185, 129, 0.08)', color: '#34D399', border: '1px dashed #059669' }}
+          style={{ marginTop: '8px', background: 'rgba(16, 185, 129, 0.08)', color: '#34D399', border: '1px dashed #059669' }}
         >
           <div className="nav-item-left">
             <BookOpen size={20} />
